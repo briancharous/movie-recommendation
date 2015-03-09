@@ -1,6 +1,8 @@
+from __future__ import division
 import argparse
 import csv
 import numpy as np
+import math
 
 class User(object):
     """ simple wrapper class """
@@ -52,7 +54,16 @@ def ratings_by_user(matrix):
 
 def cosine_distance(user1, user2):
     """ cosine distance between 2 users """
-    pass
+    both_rated = set(user1.ratings.keys()) & set(user2.ratings.keys())
+    numerator = 0
+    for movie_id in both_rated:
+        u1rating = user1.ratings[movie_id]
+        u2rating = user2.ratings[movie_id]
+        numerator += u1rating * u2rating
+    u1magnitude = math.sqrt(reduce(lambda x, y: x+y**2, user1.ratings.values()))
+    u2magnitude = math.sqrt(reduce(lambda x, y: x+y**2, user2.ratings.values()))
+    denominator = u1magnitude + u2magnitude
+    return numerator/denominator
 
 def main():
     parser = argparse.ArgumentParser()
