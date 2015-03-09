@@ -2,12 +2,12 @@ import argparse
 import csv
 
 class User(object):
-
+    """ simple wrapper class """
     def insert_rating(movie_id, rating):
         self.ratings[movie_id] = rating
 
     def has_rated_movie(movie_id):
-        return self.ratings[movie_id] is not None
+        return movie_id in self.ratings
 
     def __init__(self):
         super(User, self).__init__()
