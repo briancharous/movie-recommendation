@@ -9,7 +9,7 @@ import operator
 
 def similarity_between_items(training_filename):
     """ calculate distance between every pairing of ratings. return 
-    both the users list and a dictionary whose key is a movie id and whose
+    both the users list, movies list and a dictionary whose key is a movie id and whose
     value is a sorted list of the distance to every other movie object
     (that appears after it when listed by id #) """
     matrix = base.matrix_from_filename(training_filename)
@@ -28,7 +28,7 @@ def similarity_between_items(training_filename):
             dist = base.cosine_distance_items(movie_1, movie_2)
             distances.append((dist, movie_2_id))
         all_distances[movie_1_id] = sorted(distances)
-    return all_distances, users
+    return all_distances, users, movie_ratings
 
 def predict_rating(user, distances, uid, movie_id):
     """ predicts rating for a given user and given movie 
@@ -51,7 +51,7 @@ def predict_rating(user, distances, uid, movie_id):
 
 def recommend(training_filename, test_filename):
     print "Computing item similarities..."
-    all_distances, users = similarity_between_items(training_filename)
+    all_distances, users, movie_ratings = similarity_between_items(training_filename)
     print "I will now consult my crystal ball and make predictions..."
     error = 0
     recs_made = 0
@@ -89,13 +89,26 @@ def recommend(training_filename, test_filename):
         error_by_movie[movie] = math.sqrt(error_by_movie[movie]/occurrences)
 
     sorted_by_error = sorted(error_by_movie.items(), key=operator.itemgetter(1))
+    num_dont_include = 10
     print "Best predicted movies:"
-    for best in sorted_by_error[:10]:
-        print best[0]
+    num_best = 0
+    for best in sorted_by_error:
+        # if only 2xpeople have rated the movie, don't include it in the "best" predicted
+        if len(movie_ratings[best[0]].users) >= num_dont_include:
+            print best[0]
+            num_best += 1
+        if num_best == 10:
+            break
     print
     print "Worst predicted movies:"
-    for worst in sorted_by_error[-10:]:
-        print worst[0]
+    num_worst = 0
+    for worst in reversed(sorted_by_error):
+        # if only x people have rated the movie, don't include it in the "worst" predicted
+        if len(movie_ratings[worst[0]].users) >= num_dont_include:
+            print worst[0]
+            num_worst += 1
+        if num_worst == 10:
+            break
     print
 
     rmse = math.sqrt(error/recs_made)
