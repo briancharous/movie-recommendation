@@ -31,6 +31,9 @@ def similarity_between_items(training_filename):
     return all_distances, users
 
 def predict_rating(user, distances, uid, movie_id):
+    """ predicts rating for a given user and given movie 
+    by finding the items a user has already rated most similar to 
+    the item in question """
     rating = 0
     k = 4 # magic number, seems to give the lowest RMSE
     cur_k = 0
