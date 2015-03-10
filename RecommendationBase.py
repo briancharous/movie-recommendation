@@ -52,6 +52,20 @@ def ratings_by_user(matrix):
         users[uid].normalize_ratings()
     return users
 
+def ratings_by_movie(users):
+    """ returns a dictionary of ratings by movie id. take in a list of users 
+    so that the ratings have been normalized """
+    movies = {}
+    for uid in users.keys():
+        for movie_id in users[uid].ratings:
+            rating = users[uid].ratings[movie_id]
+            if movie_id in movies:
+                movies[movie_id].append(rating)
+            else:
+                movies[movie_id] = [rating]
+    return movies
+
+
 def cosine_distance(user1, user2):
     """ cosine distance between 2 users """
     both_rated = set(user1.ratings.keys()) & set(user2.ratings.keys())
