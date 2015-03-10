@@ -16,7 +16,7 @@ We have three files related to this project:
     ItemBasedRec.py
     UserBasedRec.py
 
-To compile: python -tr (training_filename) -te (test_filename)
+To compile: python ItemBasedRec.py -tr (training_filename) -te (test_filename)
 e.g: python -tr ua.base -te ua.test 
 """
 

@@ -4,6 +4,18 @@ import argparse
 import math
 import operator
 
+"""
+UserBasedRec.py by Brian Charous and Yawen Chen
+An implementation of recommendation system with movie data, using item based approach
+
+We have three files related to this project:
+    RecommendationBase.py
+    ItemBasedRec.py
+    UserBasedRec.py
+
+To compile: python UserBasedRec -tr (training_filename) -te (test_filename) -k (optional, k_nearest neighbors) -n(optional, min number of movies user share)
+e.g: python UserBasedRec.py -tr ua.base -te ua.test -k 10 
+"""
 def predict_ratings_user(training_file_name, test_file_name, k=10, n=10):
 	data = base.matrix_from_filename(training_file_name)
 	users = base.ratings_by_user(data) # a dictionary of user objects with their ratings for each movie
