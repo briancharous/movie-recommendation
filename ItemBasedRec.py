@@ -19,9 +19,9 @@ def similarity_between_items(training_filename):
         for j in range(i, len(movie_ids)):
             movie_2_id = movie_ids[j]
             movie_2 = movie_ratings[movie_2_id]
-            # print movie_1.users, movie_2.users
             dist = base.cosine_distance_items(movie_1, movie_2)
             distances.append((dist, movie_2_id))
+        print i, len(movie_ids)
         all_distances[movie_1_id] = sorted(distances)
     return all_distances, users
 
@@ -44,7 +44,7 @@ def recommend(training_filename, test_filename):
             user_id = int(row[0])
             movie_id = int(row[1])
             actual_rating = int(row[2])
-            predicted_rating = predicted_rating(users[user_id], all_distances[movie_id])
+            predicted_rating = predict_rating(users[user_id], all_distances[movie_id])
             print "user: {0}, movie: {1}, actual: {2}, predicted: {3}".format(user_id, 
                                                                         movie_id, actual_rating, 
                                                                         predicted_rating)

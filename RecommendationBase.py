@@ -1,7 +1,6 @@
 from __future__ import division
 import argparse
 import csv
-import numpy as np
 import math
 
 class User(object):
@@ -10,9 +9,18 @@ class User(object):
     def normalize_ratings(self):
         """ normalize ratings for user """
         ratings = self.ratings.values()
-        self.mean = np.mean(ratings)
+        mean = 0
+        for rating in ratings:
+            mean += rating
+        self.mean = mean/len(self.ratings.values())
         for mid in self.ratings:
             self.ratings[mid] = self.ratings[mid] - self.mean
+
+    def has_rated_movie(self, movie_id):
+        return movie_id in self.ratings
+
+    def insert_rating(self, movie_id, rating):
+        self.ratings[movie_id] = rating
 
     def __init__(self):
         super(User, self).__init__()
