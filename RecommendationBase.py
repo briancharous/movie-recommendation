@@ -3,6 +3,17 @@ import argparse
 import csv
 import math
 
+"""
+RecommendationBase.py by Brian Charous and Yawen Chen
+An implementation of recommendation system with movie data
+
+We have three files related to this project:
+    RecommendationBase.py
+    ItemBasedRec.py
+    UserBasedRec.py
+
+This moduel would be imported to the other two python files. 
+"""
 class User(object):
     """ simple wrapper class """
 
