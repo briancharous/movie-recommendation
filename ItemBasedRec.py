@@ -7,6 +7,19 @@ import argparse
 import math
 import operator
 
+"""
+ItemBasedRec.py by Brian Charous and Yawen Chen
+An implementation of recommendation system with movie data, using item based approach
+
+We have three files related to this project:
+    RecommendationBase.py
+    ItemBasedRec.py
+    UserBasedRec.py
+
+To compile: python -tr (training_filename) -te (test_filename)
+e.g: python -tr ua.base -te ua.test 
+"""
+
 def similarity_between_items(training_filename):
     """ calculate distance between every pairing of ratings. return 
     both the users list, movies list and a dictionary whose key is a movie id and whose
