@@ -83,7 +83,18 @@ def cosine_distance(user1, user2):
     return numerator/denominator
 
 def cosine_distance_items(movie1, movie2):
-    pass
+    """ practially the same as the function above. could probably combine
+    using some clever OOP tricks """
+    common_users = set(movie1.users.keys()) & set(movie2.users.keys())
+    numerator = 0
+    for uid in common_users:
+        u1rating = movie1.users[uid]
+        u2rating = movie2.users[uid]
+        numerator += u1rating * u2rating
+    m1magnitude = math.sqrt(reduce(lambda x, y: x+y**2, movie1.users.values()))
+    m2magnitude = math.sqrt(reduce(lambda x, y: x+y**2, movie2.users.values()))
+    denominator = m1magnitude + m2magnitude
+    return numerator/denominator
 
 def main():
     parser = argparse.ArgumentParser()
