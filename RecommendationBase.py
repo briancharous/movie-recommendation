@@ -10,12 +10,13 @@ class User(object):
     def normalize_ratings(self):
         """ normalize ratings for user """
         ratings = self.ratings.values()
-        mean = np.mean(ratings)
+        self.mean = np.mean(ratings)
         for mid in self.ratings:
-            self.ratings[mid] = self.ratings[mid] - mean
+            self.ratings[mid] = self.ratings[mid] - self.mean
 
     def __init__(self):
         super(User, self).__init__()
+        self.mean = None
         self.ratings = {}
 
 class Movie(object):
@@ -54,7 +55,8 @@ def ratings_by_user(matrix):
 
 def ratings_by_movie(users):
     """ returns a dictionary of users who have rated each movie by id. take in a list of users 
-    (i.e. generated in ratings_by_user) so that the ratings have been normalized """
+    (i.e. generated in ratings_by_user) so that the ratings have been normalized 
+    Essentially inverts the utility matrix"""
     movies = {}
     for uid in users.keys():
         for movie_id in users[uid].ratings:
@@ -77,8 +79,8 @@ def cosine_distance(user1, user2):
         u1rating = user1.ratings[movie_id]
         u2rating = user2.ratings[movie_id]
         numerator += u1rating * u2rating
-    u1magnitude = math.sqrt(reduce(lambda x, y: x+y**2, user1.ratings.values()))
-    u2magnitude = math.sqrt(reduce(lambda x, y: x+y**2, user2.ratings.values()))
+    u1magnitude = math.sqrt(sum((x)**2 for x in user1.ratings.values()))
+    u2magnitude = math.sqrt(sum((x)**2 for x in user2.ratings.values()))
     denominator = u1magnitude + u2magnitude
     return numerator/denominator
 
@@ -91,8 +93,8 @@ def cosine_distance_items(movie1, movie2):
         u1rating = movie1.users[uid]
         u2rating = movie2.users[uid]
         numerator += u1rating * u2rating
-    m1magnitude = math.sqrt(reduce(lambda x, y: x+y**2, movie1.users.values()))
-    m2magnitude = math.sqrt(reduce(lambda x, y: x+y**2, movie2.users.values()))
+    m1magnitude = math.sqrt(sum((x)**2 for x in movie1.users.values()))
+    m2magnitude = math.sqrt(sum((x)**2 for x in movie2.users.values()))
     denominator = m1magnitude + m2magnitude
     return numerator/denominator
 
