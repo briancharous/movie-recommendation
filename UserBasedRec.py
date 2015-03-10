@@ -19,6 +19,8 @@ def predict_ratings_user(training_file_name, test_file_name, k=10, n=10):
 			sorted_distance = compute_distance(uid, users)
 			predict_users_dict[uid] = sorted_distance
 		while count < k:
+			if i== len(predict_users_dict[uid]):
+				break
 			cur_user = predict_users_dict[uid][i][1]
 			if cur_user.has_rated_movie(mid):
 				prediction += cur_user.ratings[mid]
@@ -26,9 +28,11 @@ def predict_ratings_user(training_file_name, test_file_name, k=10, n=10):
 				i+= 1
 			else: 
 				i+=1
-		prediction = prediction/k		
-		prediction_list.append(tuple(row, prediction))
-		print "The predicted rating for user {0} on movie {1} is, and the actual rating is{2: ".format(row[0], row[1], prediction, row[3])
+		prediction = prediction/float(k)		
+		prediction_list.append((row, prediction))
+		print "The predicted rating for user {0} on movie {1} is {2}, and the actual rating is{3}: /n".format(row[0], row[1], prediction, row[2])
+	#for j in range(len(prediction_list)):
+    		#print "The predicted rating for user {0} on movie {1} is {2}, and the actual rating is{3}: /n".format(prediction_list[j][0][0], prediction_list[j][0][1], prediction_list[j][1], prediction_list[j][0][2])
     	return prediction_list
 
 def compute_distance(uid, users):
@@ -42,7 +46,7 @@ def compute_distance(uid, users):
     			dist_user = (dist, cur_user_object)
     			distance.append(dist_user)
 	sorted_distance = sorted(distance, key = getKey)
-	print sorted_distance [1]
+	#print sorted_distance [1]
 	return sorted_distance	
 
 def getKey(item):
