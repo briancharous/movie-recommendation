@@ -105,13 +105,3 @@ def cosine_distance_items(movie1, movie2):
     m2magnitude = math.sqrt(sum((x)**2 for x in movie2.users.values()))
     denominator = m1magnitude + m2magnitude
     return numerator/denominator
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-tr', '--training', required=False, help='Filename for training set')
-    args = parser.parse_args()
-
-    ratings_by_user(matrix_from_filename(args.training))
-
-if __name__ == '__main__':
-    main()
