@@ -14,16 +14,16 @@ class User(object):
         for mid in self.ratings:
             self.ratings[mid] = self.ratings[mid] - mean
 
-    def insert_rating(self, movie_id, rating):
-        self.ratings[movie_id] = rating
-
-    def has_rated_movie(self, movie_id):
-        return movie_id in self.ratings
-
     def __init__(self):
         super(User, self).__init__()
         self.ratings = {}
 
+class Movie(object):
+    """ simple wrapper class for movie"""
+
+    def __init__(self):
+        super(Movie, self).__init__()
+        self.users = {}
 
 def matrix_from_filename(filename):
     """ get the data. nothing to special happening here """
@@ -53,16 +53,19 @@ def ratings_by_user(matrix):
     return users
 
 def ratings_by_movie(users):
-    """ returns a dictionary of ratings by movie id. take in a list of users 
-    so that the ratings have been normalized """
+    """ returns a dictionary of users who have rated each movie by id. take in a list of users 
+    (i.e. generated in ratings_by_user) so that the ratings have been normalized """
     movies = {}
     for uid in users.keys():
         for movie_id in users[uid].ratings:
             rating = users[uid].ratings[movie_id]
+            movie = None
             if movie_id in movies:
-                movies[movie_id].append(rating)
+                movie = movies[movie_id]
             else:
-                movies[movie_id] = [rating]
+                movie = Movie()
+                movies[movie_id] = movie
+            movie.users[uid] = rating
     return movies
 
 
@@ -78,6 +81,9 @@ def cosine_distance(user1, user2):
     u2magnitude = math.sqrt(reduce(lambda x, y: x+y**2, user2.ratings.values()))
     denominator = u1magnitude + u2magnitude
     return numerator/denominator
+
+def cosine_distance_items(movie1, movie2):
+    pass
 
 def main():
     parser = argparse.ArgumentParser()
